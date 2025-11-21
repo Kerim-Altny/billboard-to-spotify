@@ -85,7 +85,6 @@ Visit `http://127.0.0.1:5000` in your browser.
 
 ## 🗺 Roadmap
 
-  * [ ] Add support for YouTube Music.
   * [ ] Improve UI/UX with a loading animation during the scraping process.
   * [ ] Optimize scraping speed with asynchronous requests.
   * [ ] Dockerize the application for easier deployment.
