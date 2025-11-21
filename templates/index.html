@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spotify Zaman Makinesi</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: steelblue;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            color: #333;
+        }
+        .container {
+            background-color:#e8dcdc;
+            padding: 2.5rem 3rem;
+            border-radius: 16px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            width: 100%;
+            max-width: 450px;
+            box-sizing: border-box;
+            margin: 1rem;
+        }
+        h2 { margin-top: 0; color: #222; font-size: 1.75rem; }
+        p { color: #555; line-height: 1.6; margin-bottom: 2rem; }
+        form { display: flex; flex-direction: column; gap: 1.5rem; } 
+        label { font-weight: bold; text-align: left; font-size: 0.9rem; color: #444; }
+
+       
+        input[type="date"] {
+            font-family: inherit;
+            font-size: 1rem;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-sizing: border-box;
+            width: 100%;
+            transition: all 0.2s ease;
+            background-color: #fff;
+            cursor: pointer;
+        }
+        input[type="date"]:focus {
+            outline: none;
+            border-color: #6C63FF;
+            box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.1);
+        }
+
+    
+        .btn {
+            display: inline-block;
+            background-color: #6C63FF;
+            color: #ffffff;
+            padding: 14px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1rem;
+            text-decoration: none;
+            transition: all 0.2s ease-in-out;
+            width: 100%;
+            box-sizing: border-box;
+            margin-top: 0.5rem;
+        }
+        .btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(108, 99, 255, 0.2);
+        }
+
+    
+        .input-group {
+            text-align: left;
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 0.5rem;
+            gap: 1rem; 
+            margin-top: 0.5rem;
+            flex-wrap: wrap;
+            justify-content: center; 
+        }
+        .radio-container {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 10px 15px;
+            flex-grow: 1;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+
+
+
+.radio-container[for="chart_global"] {
+    background-color: #e6f2ff; 
+    border-color: #b3d4ff;
+}
+.radio-container[for="chart_global"]:hover {
+    border-color: #80b9ff;
+}
+input[id="chart_global"]:checked + .radio-container {
+    background-color: #cce4ff; 
+    border-color: #007bff;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15);
+}
+
+
+.radio-container[for="chart_turkce"] {
+    background-color: #ffe6e6; 
+    border-color: #ffb3b3;
+}
+.radio-container[for="chart_turkce"]:hover {
+    border-color: #ff8080; 
+}
+input[id="chart_turkce"]:checked + .radio-container {
+    background-color: #ffcccc; 
+    border-color: #dc3545;
+    box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.15);
+}
+/* Pop (Yeşil) */
+.radio-container[for="chart_pop"] {
+    background-color: #e6f7e6; 
+    border-color: #b3e0b3;
+}
+.radio-container[for="chart_pop"]:hover {
+    border-color: #80c880; 
+}
+input[id="chart_pop"]:checked + .radio-container {
+    background-color: #ccebce; 
+    border-color: #28a745;
+    box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.15);
+}
+
+
+.radio-container[for="chart_hiphop"] {
+    background-color: #f0f0f0; 
+    border-color: #d1d1d1;
+}
+.radio-container[for="chart_hiphop"]:hover {
+    border-color: #a1a1a1; 
+}
+input[id="chart_hiphop"]:checked + .radio-container {
+    background-color: #e0e0e0; 
+    border-color: #6c757d; 
+    box-shadow: 0 0 0 3px rgba(108, 117, 125, 0.15);
+}
+
+        input[type="radio"] {
+            display: none;
+        }
+
+        .radio-container label {
+            margin: 0;
+            font-weight: 500;
+            color: #333;
+            cursor: pointer;
+        }
+       
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Spotify Zaman Makinesi</h2>
+        <p>Hangi listeyi ve tarihi istersiniz?</p>
+
+        <form action="/create_playlist" method="POST">
+
+            <div class="input-group">
+                <label>Liste Tipi Seçin:</label>
+                <div class="radio-group">
+    <input type="radio" id="chart_global" name="chart_type" value="global" checked >
+    <label for="chart_global" class="radio-container">
+        <span>🌎</span>
+        <label for="chart_global">Global</label>
+    </label>
+
+    <input type="radio" id="chart_turkce" name="chart_type" value="turkce">
+    <label for="chart_turkce" class="radio-container">
+        <span>🇹🇷</span>
+        <label for="chart_turkce">Türkçe</label>
+    </label>
+
+    <input type="radio" id="chart_hiphop" name="chart_type" value="hiphop">
+    <label for="chart_hiphop" class="radio-container">
+        <span>🎧</span>
+        <label for="chart_hiphop">R&B/Hip-Hop</label>
+    </label>
+                    <input type="radio" id="chart_pop" name="chart_type" value="pop">
+<label for="chart_pop" class="radio-container">
+    <span>🎵</span>
+    <label for="chart_pop">Pop</label>
+</label>
+</div>
+            </div>
+
+            <div class="input-group">
+                <label for="date">Tarih Seçin:</label>
+                <input type="date" id="date" name="date" required placeholder="YYYY-MM-DD">
+            </div>
+
+            <button type="submit" class="btn">Çalma Listesi Oluştur</button>
+        </form>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://npmcdn.com/flatpickr/dist/l10n/tr.js"></script>
+    <script>
+        flatpickr("#date", {
+            locale: "tr",
+            dateFormat: "Y-m-d",
+        });
+    </script>
+
+</body>
+</html>
